@@ -1,0 +1,3 @@
+---
+mariadb_bases: ["{{ jamf_db }}"]
+mariadb_users: [{ name: "{{ jamf_db_user }}", password: "{{ jamf_db_pass }}", privileges: "{{ jamf_db }}.*:ALL,GRANT" }]

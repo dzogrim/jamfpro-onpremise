@@ -1,0 +1,33 @@
+---
+- name: start tomcat8
+  systemd:
+    name: tomcat8
+    state: restarted
+  when:
+    - not ansible_check_mode
+
+- name: stop tomcat8
+  systemd:
+    name: tomcat8
+    state: stopped
+  when:
+    - not ansible_check_mode
+  listen: "stop tomcat"
+
+- name: start jamf.tomcat8
+  systemd:
+    enabled: True
+    state: restarted
+    daemon_reload: yes
+    name: jamf.tomcat8
+  when:
+    - not ansible_check_mode
+  listen: "start tomcat"
+
+- name: stop jamf.tomcat8
+  systemd:
+    state: stopped
+    name: jamf.tomcat8
+  when:
+    - not ansible_check_mode
+  listen: "stop tomcat"

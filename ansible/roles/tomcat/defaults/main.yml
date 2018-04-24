@@ -1,0 +1,4 @@
+tomcat_packages:
+  - tomcat8
+  - tomcat8-common
+  - tomcat8-admin

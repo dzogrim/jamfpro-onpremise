@@ -1,0 +1,4 @@
+---
+- name: "Include common"
+  include: common.yml
+  tags: [ common ]

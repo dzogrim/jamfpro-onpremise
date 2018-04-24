@@ -1,0 +1,60 @@
+---
+- name: Install python-apt
+  apt:
+    name: python-apt
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: install common packages
+  apt:
+    name: "{{ item.pkg }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  with_items:
+    - { pkg: ntp }
+    - { pkg: htop }
+    - { pkg: iotop }
+    - { pkg: iftop }
+    - { pkg: zip }
+    - { pkg: unzip }
+    - { pkg: mtr }
+    - { pkg: curl }
+    - { pkg: vim }
+    - { pkg: git }
+    - { pkg: apt-transport-https }
+    - { pkg: ca-certificates }
+    - { pkg: sudo }
+    - { pkg: tmux }
+    - { pkg: ncdu }
+    - { pkg: strace }
+    - { pkg: dlocate }
+    - { pkg: dpkg-repack }
+    - { pkg: sysstat }
+    - { pkg: procps }
+    - { pkg: lsof }
+
+- name: Configure sshd
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+    validate: /usr/sbin/sshd -t -f %s
+  notify: restart ssh
+
+- name: "Configure locale (1/2)"
+  stat:
+    path: /etc/default/locale
+  register: deflocale_stat
+
+- name: Configure locale (2/2)
+  template:
+    src: locale.j2
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: 0644
+  when: not deflocale_stat.stat.exists

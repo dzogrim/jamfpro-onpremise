@@ -1,0 +1,5 @@
+[jss_servers]
+jss01.local ansible_host=192.168.100.151 ansible_user=adminlocal ansible_become=true ansible_python_interpreter=/usr/bin/python3
+
+[bdd_servers]
+jss01.local ansible_host=192.168.100.151 ansible_user=adminlocal ansible_become=true ansible_python_interpreter=/usr/bin/python3

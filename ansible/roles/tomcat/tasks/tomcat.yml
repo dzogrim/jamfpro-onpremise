@@ -1,0 +1,6 @@
+---
+- name: Install tomcat
+  apt: update_cache=yes name={{ item }} state=present
+  with_items:
+    - "{{ tomcat_packages }}"
+  tags: tomcat

@@ -1,0 +1,4 @@
+---
+- name: include mariadb tasks
+  include_tasks: mariadb.yml
+  tags: [mariadb]

@@ -1,0 +1,4 @@
+---
+ssh_permit_root_login: without-password
+ssh_password_authentication: "yes"
+ssh_x11_forwarding: "no"

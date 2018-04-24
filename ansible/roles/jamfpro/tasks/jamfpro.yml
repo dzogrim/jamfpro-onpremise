@@ -1,0 +1,70 @@
+---
+- name: "Copy Jamf pro installer"
+  copy:
+    src: "{{jamfprodirectory}}/{{jamfproinstaller}}"
+    dest: /tmp/
+    owner: root
+    group: root
+    mode: 0700
+
+- name: "Copy Systemd unit file for tomcat"
+  copy:
+    src: jamf.tomcat.sys
+    dest: /lib/systemd/system/jamf.tomcat8.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Unpack Jamf Pro package"
+  become: true
+  shell: sh /tmp/"{{jamfproinstaller}}" --noexec --target /tmp/JPS_Installer
+  notify: "stop tomcat"
+
+- name: Tomcat flush handlers
+  meta: flush_handlers
+
+- name: "Unpack Jamf Pro package should be successfull"
+  stat:
+    path: /tmp/JPS_Installer/install.sh
+  register: installer_stat
+  notify: "stop tomcat"
+
+- name: "Install Jamf Pro from official installer"
+  become: true
+  command: bash -i /tmp/JPS_Installer/install.sh -y
+  args:
+    chdir: /tmp/JPS_Installer/
+  register: result
+  when: installer_stat.stat.exists
+  ignore_errors: false
+
+- debug:
+    msg: '{{result}}'
+
+- name: "Remove useless Jamf Pro init.d script (1/2)"
+  stat:
+    path: /etc/init.d/jamf.tomcat8
+  register: uselessfiles_stat
+
+- name: "Remove useless Jamf Pro init.d script (2/2)"
+  file:
+    path: /etc/init.d/jamf.tomcat8
+    state: absent
+  when: uselessfiles_stat.stat.exists
+
+- name: "Configure JSSDBUtilityConfig.xml"
+  template:
+    src: JSSDBUtilityConfig.xml.j2
+    dest: /usr/local/jss/bin/JSSDBUtilityConfig.xml
+    owner: root
+    group: root
+    mode: 0644
+  notify: "start tomcat"
+
+- name: "Configure DataBase.xml"
+  template:
+    src: DataBase.xml.j2
+    dest: /usr/local/jss/tomcat/webapps/ROOT/WEB-INF/xml/DataBase.xml
+    owner: root
+    group: root
+    mode: 0644

@@ -1,0 +1,21 @@
+# Systemd unit file for tomcat
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/jss/tomcat/bin/startup.sh
+ExecStop=/usr/local/jss/tomcat/bin/shutdown.sh
+User=jamftomcat
+Group=jamftomcat
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+Alias=jamf.tomcat8.service
+
+[Service]
+SuccessExitStatus=143

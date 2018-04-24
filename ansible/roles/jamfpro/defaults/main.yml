@@ -1,0 +1,5 @@
+---
+# You must provide uncompressed installer from downloaded zip file
+# for exemple, extract "jamf-pro-installer-linux-10.3.1.zip" in "Installer_for_Linux"
+jamfprodirectory: Installer_for_Linux
+jamfproinstaller: jamfproinstaller.run

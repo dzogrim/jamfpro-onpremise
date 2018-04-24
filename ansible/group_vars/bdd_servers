@@ -1,0 +1,6 @@
+---
+jamf_db_server: localhost
+jamf_db_port: 3306
+jamf_db: jamfsoftware
+jamf_db_user: jamfsoftware
+jamf_db_pass: jamfsw03

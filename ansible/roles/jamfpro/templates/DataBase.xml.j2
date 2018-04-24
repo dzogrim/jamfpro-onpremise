@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<DataBase>
+    <DataBaseType>mysql</DataBaseType>
+    <DataBaseDriver>org.mariadb.jdbc.Driver</DataBaseDriver>
+    <ServerName>{{jamf_db_server}}</ServerName>
+    <ServerPort>{{jamf_db_port}}</ServerPort>
+    <DataBaseName>{{jamf_db}}</DataBaseName>
+    <DataBaseUser>{{jamf_db_user}}</DataBaseUser>
+    <DataBasePassword>{{jamf_db_pass}}</DataBasePassword>
+    <MinPoolSize>5</MinPoolSize>
+    <MaxPoolSize>45</MaxPoolSize>
+    <MaxIdleTimeExcessConnectionsInMinutes>1</MaxIdleTimeExcessConnectionsInMinutes>
+    <MaxConnectionAgeInMinutes>5</MaxConnectionAgeInMinutes>
+    <NumHelperThreads>3</NumHelperThreads>
+    <InStatementBatchSize>1000</InStatementBatchSize>
+    <jdbcParameters>?characterEncoding=utf8&amp;useUnicode=true&amp;jdbcCompliantTruncation=false</jdbcParameters>
+    <!-- Logs connections checked out for 4.5 minutes before they are closed once reaching the MaxConnectionAgeInMinutes -->
+    <LeakDetectionThresholdMs>270000</LeakDetectionThresholdMs>
+</DataBase>

@@ -1,0 +1,13 @@
+---
+# Definition of Jamf|PRO playbook
+- hosts: bdd_servers
+  roles:
+    - basics
+    - mariadb
+
+- hosts: jss_servers
+  roles:
+    - basics
+    - jre-8
+    - tomcat
+    - jamfpro

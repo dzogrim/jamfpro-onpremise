@@ -1,0 +1,10 @@
+---
+- name: reload systemd
+  shell: systemctl daemon-reload
+
+- name: restart ssh
+  service:
+    name: ssh
+    state: restarted
+  when:
+    - not ansible_check_mode

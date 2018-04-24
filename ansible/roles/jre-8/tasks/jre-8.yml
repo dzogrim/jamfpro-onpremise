@@ -1,0 +1,29 @@
+- name: "Jre 8 install apt key"
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: EEA14886
+
+- name: "Jre 8 setup repository"
+  apt_repository:
+    repo: deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main
+    filename: java8-debian.list
+    state: present
+  register: jre8_repo
+
+- name: Jre 8 Accept License
+  become: True
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+- name: "Jre 8 install package"
+  apt:
+    name: oracle-java8-installer
+    state: present
+  when:
+    - not ( ansible_check_mode and jre8_repo.changed )
+
+- name: "Jre 8 Java Cryptography Extensions"
+  apt:
+    name: oracle-java8-unlimited-jce-policy
+    state: present
+  when:
+    - not ( ansible_check_mode and jre8_repo.changed )
